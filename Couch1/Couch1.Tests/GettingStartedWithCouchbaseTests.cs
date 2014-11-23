@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Couch1.Tests.DTOs;
 using NUnit.Framework;
 using DebugPrinter = StatePrinter.StatePrinter;
 
@@ -17,11 +18,6 @@ namespace Couch1.Tests
         public GettingStartedWithCouchbaseTests()
         {
             _printer = new DebugPrinter();
-        }
-
-        public class Person : Migratable
-        {
-            public override Ver Ver { get { return }}
         }
 
         [Test]
@@ -51,17 +47,5 @@ namespace Couch1.Tests
         }
 
         public enum DrinkType { Beer, Other }
-
-        public class Beer
-        {
-            public string Name { get; set; }
-            public float Abv { get; set; }
-            public float Ibu { get; set; }
-            public float Upc { get; set; }
-            public DrinkType @Type { get; set; }
-            public string Description { get; set; }
-        }
-
-
     }
 }

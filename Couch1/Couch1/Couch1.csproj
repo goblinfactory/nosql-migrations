@@ -51,6 +51,7 @@
     <Compile Include="Couchbase.cs" />
     <Compile Include="CouchbaseManager.cs" />
     <Compile Include="Migratable.cs" />
+    <Compile Include="Ver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

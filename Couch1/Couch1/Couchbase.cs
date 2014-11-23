@@ -21,13 +21,23 @@ namespace Couch1
             return obj;
         }
 
-        //public void Add<T>(string key, T src)
-        //{
-        //    var json = JsonConvert.SerializeObject(src);
+        public T GetMigratible<T>(string key, bool writeIfMigrate = true) where T : Migratable
+        {
+            string json = _client.Get(key).ToString();
+            // get version from json
+            var version = JsonConvert.DeserializeObject<Ver>(json);
 
-        //    _client.Store(StoreMode.Add,key, )
-        //    return obj;
-        //}
+            T obj = JsonConvert.DeserializeObject<T>(json);
+            return obj;
+        }
+
+
+        public bool Add<T>(string key, T src)
+        {
+            var json = JsonConvert.SerializeObject(src);
+            var result = _client.Store(StoreMode.Add, key, json);
+            return result;
+        }
 
 
         public string GetJson(string key)
