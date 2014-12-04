@@ -16,16 +16,19 @@ namespace Couch1
 
         public T Get<T>(string key)
         {
+            // Is there already a .net strongly typed "get" or similar fetch/read?
+            // seems odd that there is not?
             string json = _client.Get(key).ToString();
             T obj = JsonConvert.DeserializeObject<T>(json);
             return obj;
+
         }
 
         public T GetMigratible<T>(string key, bool writeIfMigrate = true) where T : Migratable
         {
             string json = _client.Get(key).ToString();
             // get version from json
-            var version = JsonConvert.DeserializeObject<Ver>(json);
+            var ver = JsonConvert.DeserializeObject<TypeInfo>(json);
 
             T obj = JsonConvert.DeserializeObject<T>(json);
             return obj;

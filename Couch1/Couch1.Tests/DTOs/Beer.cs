@@ -2,9 +2,6 @@
 {
     public class Beer : Migratable
     {
-        // migratible
-        public override Ver Ver { get; set; }
-
         // beer
         public string Name { get; set; }
         public float Abv { get; set; }

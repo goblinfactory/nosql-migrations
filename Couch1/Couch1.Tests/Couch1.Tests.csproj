@@ -30,6 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions.Core">
+      <HintPath>..\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -48,9 +57,11 @@
   <ItemGroup>
     <Compile Include="DTOs\Beer.cs" />
     <Compile Include="GettingStartedWithCouchbaseTests.cs" />
+    <Compile Include="Migrations\PersonMigrations\Person_1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TestMigrating.cs" />
+    <Compile Include="VerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

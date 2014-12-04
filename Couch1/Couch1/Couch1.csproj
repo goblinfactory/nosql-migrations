@@ -51,8 +51,11 @@
     <Compile Include="Couchbase.cs" />
     <Compile Include="CouchbaseManager.cs" />
     <Compile Include="Migratable.cs" />
-    <Compile Include="Ver.cs" />
+    <Compile Include="MigratableHelper.cs" />
+    <Compile Include="ToStringJsonConverter.cs" />
+    <Compile Include="TypeInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VersionAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
