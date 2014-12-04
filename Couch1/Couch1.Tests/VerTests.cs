@@ -13,6 +13,11 @@ namespace Couch1.Tests
     [JsonObject(MemberSerialization.OptIn)]
     internal class NullPerson : TestPerson { }
     
+    internal class NonVersioned
+    {
+        
+    }
+
     [Version(1,2)]
     internal class TestPerson : Migratable
     {
@@ -51,7 +56,7 @@ namespace Couch1.Tests
     {
 
         [Test]
-        public void JsonSerialisationTests()
+        public void ReferencingPropertiesOfNullObjectsShouldReturnNullDefaultObjectsAndNotThrowException()
         {
             var fred = new TestPerson("Fred")
                 {
@@ -61,16 +66,37 @@ namespace Couch1.Tests
 
             Console.WriteLine("fred.Mother.Mother.Mother.Father.Father.Mother.Name:{0}", fred.Mother.Mother.Mother.Father.Father.Mother.Name);
             Console.WriteLine("fred.Father.Mother.Name:{0}",fred.Father.Mother.Name);
-            Console.WriteLine("----");
+            Console.WriteLine("---- fred json ----");
             var json = fred.ToJson();
             Console.WriteLine(json);
             //NB! now test I can deserialize this Json back to a valid object! use Fluent to check the whole object
             var p2 = JsonConvert.DeserializeObject<TestPerson>(json);
             Console.WriteLine("fred.Mother.Mother.Mother.Father.Father.Mother.Name:{0}", p2.Mother.Mother.Mother.Father.Father.Mother.Name);
-            Console.WriteLine("fred.Father.Mother.Name:{0}", p2.Father.Mother.Name);
-            
+            Console.WriteLine("fred.Father.Mother.Name:{0}", p2.Father.Mother.Name);            
         }
 
+        [Test]
+        public void ReadClassNameTest()
+        {
+            var ti = MigratableTypeInfo.ReadVersion<TestPerson>();
+            ti.ClassName.Should().Be("TestPerson");
+        }
+
+        [Test]
+        public void ReadNamespaceTest()
+        {
+            var ti = MigratableTypeInfo.ReadVersion<TestPerson>();
+            ti.Namespace.Should().Be("Couch1.Tests");
+        }
+
+        [TestCase(typeof(TestPerson),1,2)]
+        [TestCase(typeof(NonVersioned),0,0)]
+        public void ReadVersionMajorAndMinorTest(Type type, int major, int minor)
+        {
+            var ti = MigratableHelper.ReadVersion(type);
+            ti.Version.Major.Should().Be(major);
+            ti.Version.Minor.Should().Be(minor);
+        }
 
         [TestCase("1.1", "1.2", false)]
         [TestCase("1.1", "1.1", true)]
@@ -117,17 +143,17 @@ namespace Couch1.Tests
 
         public void OperatorGreaterTests(string lh, string rh, bool typeSame, bool result)
         {
-            var left = new TypeInfo(lh, typeof(TestPerson));
+            var left = new MigratableTypeInfo(lh, typeof(TestPerson));
             var right = typeSame
-                            ? new TypeInfo(rh, typeof(TestPerson))
-                            : new TypeInfo(rh, typeof(TestMigratablePerson));
+                            ? new MigratableTypeInfo(rh, typeof(TestPerson))
+                            : new MigratableTypeInfo(rh, typeof(TestMigratablePerson));
             (left > right).Should().Be(result);
         }
 
         [Test]
         public void NamespaceAndClassNameTests()
         {
-            var t1 = new TypeInfo(1, 1, typeof (TestPerson));
+            var t1 = new MigratableTypeInfo(1, 1, typeof (TestPerson));
             t1.ClassName.Should().Be("TestPerson");
             t1.Namespace.Should().Be("Couch1.Tests");
 
@@ -142,10 +168,10 @@ namespace Couch1.Tests
 
         public void StringEqualsTest(string lh, string rh, bool typeSame, bool result)
         {
-            var left = new TypeInfo(lh, typeof(TestPerson));
+            var left = new MigratableTypeInfo(lh, typeof(TestPerson));
             var right = typeSame
-                            ? new TypeInfo(rh, typeof(TestPerson))
-                            : new TypeInfo(rh, typeof(TestMigratablePerson));
+                            ? new MigratableTypeInfo(rh, typeof(TestPerson))
+                            : new MigratableTypeInfo(rh, typeof(TestMigratablePerson));
             lh.Equals(rh).Should().Be(result);
         }
 

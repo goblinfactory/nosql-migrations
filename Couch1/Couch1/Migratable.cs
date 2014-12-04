@@ -11,12 +11,12 @@ namespace Couch1
             TypeInfo = GetVersion();
         }
 
-        private TypeInfo GetVersion()
+        private MigratableTypeInfo GetVersion()
         {
             return MigratableHelper.ReadVersion(GetType());
         }
 
-        public TypeInfo TypeInfo { get; set; }
+        public MigratableTypeInfo TypeInfo { get; set; }
 
         public string ToJson()
         {

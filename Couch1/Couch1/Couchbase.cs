@@ -28,7 +28,7 @@ namespace Couch1
         {
             string json = _client.Get(key).ToString();
             // get version from json
-            var ver = JsonConvert.DeserializeObject<TypeInfo>(json);
+            var ver = JsonConvert.DeserializeObject<MigratableTypeInfo>(json);
 
             T obj = JsonConvert.DeserializeObject<T>(json);
             return obj;

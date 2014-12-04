@@ -9,9 +9,9 @@ namespace Couch1
 {
     public static class MigratableHelper
     {
-        public static TypeInfo ConfirmCompatible<T>(TypeInfo fromVersion) where T : Migratable
+        public static MigratableTypeInfo ConfirmCompatible<T>(MigratableTypeInfo fromVersion) where T : Migratable
         {
-            var toVersion = ReadVersion<T>();
+            var toVersion = MigratableTypeInfo.ReadVersion<T>();
             if (toVersion.GetHashCode() >= fromVersion.GetHashCode()) return toVersion; // e.g. from 2.1 to 3.6 IS migratable!
             var name = fromVersion.GetType().Name;
             // if got here then version is not migratable, e.g. backwards, from 3.6 to 2.1!
@@ -19,15 +19,15 @@ namespace Couch1
             throw new SerializationException(msg);
         }
 
-        public static TypeInfo ReadVersion(Type type)
+        public static MigratableTypeInfo ReadVersion(Type type)
         {
             // if class is decorated with a version attribute
             var ver = (VersionAttribute)type.GetCustomAttributes(typeof(VersionAttribute), true).FirstOrDefault();
-            if (ver != null) return new TypeInfo(ver.Major, ver.Minor, type);
+            if (ver != null) return new MigratableTypeInfo(ver.Major, ver.Minor, type);
             // if class has no version attribute, look for version in naming convention!
             var className = type.Name;
             var parts = className.Split(new char[] { '_' });
-            var version = new TypeInfo();
+            var version = new MigratableTypeInfo();
             var build = version.Version;
             try
             {
@@ -48,11 +48,6 @@ namespace Couch1
             }
             return version;
             
-        }
-        public static TypeInfo ReadVersion<T>()
-        {
-            var type = typeof(T);
-            return ReadVersion(type);
         }
     }
 }
