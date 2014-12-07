@@ -27,7 +27,11 @@ namespace Couch1
             // if class has no version attribute, look for version in naming convention!
             var className = type.Name;
             var parts = className.Split(new char[] { '_' });
-            var version = new MigratableTypeInfo();
+            var version = new MigratableTypeInfo()
+                {
+                    ClassName = className,
+                    Namespace = type.Namespace
+                };
             var build = version.Version;
             try
             {

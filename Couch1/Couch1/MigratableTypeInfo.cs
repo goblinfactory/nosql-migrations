@@ -12,6 +12,12 @@ namespace Couch1
     [JsonConverter(typeof(ToStringJsonConverter))]
     public class MigratableTypeInfo
     {
+
+        public bool SameClassAs(MigratableTypeInfo rh)
+        {
+            return ((Namespace == rh.Namespace) && (ClassName == rh.ClassName));
+        }
+
         public static MigratableTypeInfo ReadVersion<T>()
         {
             var type = typeof(T);
@@ -50,8 +56,12 @@ namespace Couch1
                 int namespacePosition = classPosition - 1;
                 int namespaceLength = len - namespacePosition;
                 ti.Namespace = parts.Take(namespaceLength).ToString('.');
-                ti.ClassName = parts[classPosition];
-                ti.Version = new Version();
+                ti.ClassName = parts[classPosition-1];
+                ti.Version = new Version()
+                    {
+                        Major = int.Parse(parts[majorPosition - 1]),
+                        Minor = int.Parse(parts[minorPosition - 1])
+                    };
                 return ti;
             }
             catch (Exception) { throw new SerializationException("could not deserialize TypeInfo from '" + typeInfo + "'");}
@@ -69,52 +79,15 @@ namespace Couch1
             Version.Minor = minor;
         }
 
-        public override int GetHashCode()
-        {
-            return Version.Major * 100000 + Version.Minor;
-        }
-
         public MigratableTypeInfo(string version, Type type) : this(type)
         {
-            if (String.IsNullOrWhiteSpace(version)) return;
+            Version = new Version(version);
         }
 
-        public static bool operator >(MigratableTypeInfo lh, MigratableTypeInfo rh)
+        public bool Equals(MigratableTypeInfo other)
         {
-            return lh.GetHashCode() > rh.GetHashCode();
+            return (ClassName == other.ClassName && Namespace == other.Namespace && Version.Equals(other.Version));
         }
 
-        public static bool operator <(MigratableTypeInfo lh, MigratableTypeInfo rh)
-        {
-            return lh.GetHashCode() < rh.GetHashCode();
-        }
     }
-
-    [JsonConverter(typeof (ToStringJsonConverter))]
-    public class Version
-    {
-        public Version()
-        {}
-
-        public Version(string version)
-            {
-                var parts = version.Split(new char[] { '.' });
-                Major = int.Parse(parts[0]);
-                Minor = int.Parse(parts[1]);
-            }
-            public int Major { get; set; }
-            public int Minor { get; set; }
-            public override string ToString()
-            {
-                return string.Format("{0}.{1}", Major, Minor);
-            }
-
-            // we have to have an implicit operetor here because we're using ToStringJsonConverter which will cast a string to our object 
-            // as it's way of deserializing member values from json.
-            public static implicit operator Version(string src)
-            {
-                return new Version(src);
-            }
-        }
-
 }

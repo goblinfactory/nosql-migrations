@@ -1,33 +1,16 @@
 ﻿using System;
 using System.Linq;
+using Couch1.Tests.DBTests;
 using Newtonsoft.Json;
 
 namespace Couch1.Tests.Migrations.PersonMigrations
 {
     public class Person_1 : Migratable
     {
-        public string Name { get; set; }       
+        public string Name { get; set; }
+        public override string Id { get; set; }
     }
 
-
-    //TODO: move the Couch1 namespace to NoSqlMigrator namespace
-    public static class Migrator
-    {
-        public static T Create<T>(string json) where T : Migratable
-        {
-            var verFrom = JsonConvert.DeserializeObject<Couch1.MigratableTypeInfo>(json);
-            var verTo = MigratableHelper.ConfirmCompatible<T>(verFrom);
-
-            if (verFrom.Equals(verTo))
-                return JsonConvert.DeserializeObject<T>(json);
-            else
-                Activator.CreateInstance(typeof (T), json);
-            
-            //NOTE: hack!
-            return default(T);
-        }
-
-    }
 
     public class Test
     {
@@ -41,8 +24,9 @@ namespace Couch1.Tests.Migrations.PersonMigrations
     public class Person_2 : Migratable
     {
         public string FirstName { get; set; }
-        public string LastName { get; set; }     
- 
+        public string LastName { get; set; }
+        public override string Id { get; set; }
+
         public Person_2(string json)
         {
             
@@ -61,6 +45,7 @@ namespace Couch1.Tests.Migrations.PersonMigrations
             if (nameParts.Length > 1) 
                 LastName = string.Join(" ", nameParts.Skip(1).ToArray());
         }
+
     }
 
     

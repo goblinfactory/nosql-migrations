@@ -16,18 +16,5 @@ namespace Couch1
 
         public int Major { get; set; }
         public int Minor { get; set; }
-
-        public override int GetHashCode()
-        {
-            return (Major * 10000) + Minor;
-        }
-        public override bool Equals(object attribute)
-        {
-            var att = attribute as VersionAttribute;
-            return (att.GetHashCode() == GetHashCode());
-        }
-
-        // override greater than and less than operators
-
     }
 }

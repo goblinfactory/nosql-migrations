@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Couchbase;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
+//using Couchbase;
 
-namespace Couch1
-{
-    public static class CouchbaseManager
-    {
-        private readonly static CouchbaseClient _instance;
+//namespace Couch1
+//{
+//    public static class CouchbaseManager
+//    {
+//        private readonly static CouchbaseClient _instance;
 
-        static CouchbaseManager()
-        {
-            _instance = new CouchbaseClient();
-        }
+//        static CouchbaseManager()
+//        {
+//            _instance = new CouchbaseClient();
+//        }
 
-        public static CouchbaseClient Instance { get { return _instance; } }
+//        public static CouchbaseClient Instance { get { return _instance; } }
 
-    }
-}
+//    }
+//}

@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Couch1;
-using Couch1.Tests.DTOs;
 using Couch1.Tests.Migrations.PersonMigrations;
+using Couchbase;
+using Couchbase.Core;
 using NUnit.Framework;
 
-namespace Couch1.Tests
+namespace Couch1.Tests.DBTests
 {
 
 
@@ -20,12 +16,10 @@ namespace Couch1.Tests
         {
             // note:could use couchbase incrementor! (will do that later!)
 
-            var db = new Couchbase();
-
             // write ver 1.0 into database
             var key = "gf:person:" + Guid.NewGuid().ToString();
             var person_1 = new Person_1() { Name = "Fred Smith " };
-            db.Add(key, person_1);
+            Test.Bucket.Upsert(key, person_1);
 
             // note: we only need the agggregate roots to have unique names ?
             // ======================================================
@@ -45,7 +39,12 @@ namespace Couch1.Tests
     [Version(3,0)]
     public class Person : Migratable
     {
+        public Person() {}
+        public override string Id { get; set; }
+        public string Name { get; set; }
         public string Address { get; set; }
+        public string Department { get; set; }
+        public int Age { get; set; }
 
         // on bigger objects would use Inject to auto map the fields 
         public Person(Person_2 person)
@@ -53,6 +52,7 @@ namespace Couch1.Tests
 
         }
 
+        
     }
 
 }

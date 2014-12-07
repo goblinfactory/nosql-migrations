@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Common.Logging.2.0.0\lib\2.0\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Couchbase.NetClient">
+      <HintPath>..\packages\CouchbaseNetClient.2.0.0.1\lib\net45\Couchbase.NetClient.dll</HintPath>
+    </Reference>
     <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
@@ -55,16 +61,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBTests\CouchViewTests.cs" />
+    <Compile Include="DBTests\Test.cs" />
     <Compile Include="DTOs\Beer.cs" />
-    <Compile Include="GettingStartedWithCouchbaseTests.cs" />
+    <Compile Include="DBTests\GettingStartedWithCouchbaseTests.cs" />
     <Compile Include="Migrations\PersonMigrations\Person_1.cs" />
+    <Compile Include="MiscTests\DefaultNullObjectTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="TestMigrating.cs" />
-    <Compile Include="VerTests.cs" />
+    <Compile Include="DBTests\TestMigrating.cs" />
+    <Compile Include="MigratableTypeInfoTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Copy of App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

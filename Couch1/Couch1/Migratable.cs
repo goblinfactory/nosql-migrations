@@ -1,30 +1,26 @@
-using System;
 using Newtonsoft.Json;
 
 namespace Couch1
 {
-
-    public  class Migratable
+    public abstract class Migratable
     {
-        public Migratable()
+        protected Migratable()
         {
-            TypeInfo = GetVersion();
+            TypeInfo = MigratableHelper.ReadVersion(GetType());
         }
 
-        private MigratableTypeInfo GetVersion()
-        {
-            return MigratableHelper.ReadVersion(GetType());
-        }
+        public abstract string Id { get; set; }
 
         public MigratableTypeInfo TypeInfo { get; set; }
 
-        public string ToJson()
+        [JsonIgnore]
+        public string Key
         {
-            return this.ToString();
+            get
+            {
+                return string.Format("{0}.{1}:{2}",TypeInfo.Namespace, TypeInfo.ClassName, Id);    
+            }
         }
-        public override string ToString()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
+
     }
 }
